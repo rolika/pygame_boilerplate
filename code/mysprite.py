@@ -4,10 +4,10 @@ from code.constants import DEFAULT_SPRITE_COLOR, DEFAULT_SPRITE_SIZE
 
 
 class MySprite(pg.sprite.Sprite):
-    def __init__(self, pos: pg.Vector2, speed: pg.Vector2, image_file: str = None) -> None:
+    def __init__(self, pos: tuple[float], speed: tuple[float], image_file: str = None) -> None:
         super().__init__()
-        self._pos = pos
-        self._speed = speed
+        self._pos = pg.Vector2(pos)
+        self._speed = pg.Vector2(speed)
         self._image = self._load_image(image_file)
         self._image.convert_alpha()
         self._rect = self._image.get_rect()
