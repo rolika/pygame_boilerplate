@@ -140,6 +140,7 @@ class TestMySprite(unittest.TestCase):
             else:
                 sprite.speed = (0, 0)
 
+            # update the sprite
             group.update()
             sprite.rect.center = sprite.pos
 
@@ -156,6 +157,7 @@ class TestMySprite(unittest.TestCase):
                 # uődate position to the restricted position
                 sprite.pos = sprite.rect.center
 
+            # finally draw the sprite
             group.draw(self.screen)
 
             pg.display.flip()
