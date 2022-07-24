@@ -64,6 +64,48 @@ class TestMySprite(unittest.TestCase):
 
             pg.display.flip()
             self.clock.tick(60)
+    
+    def test_multiple_bounce_sprite(self):
+        """Close the window to end the test."""
+        sprite1 = MySprite((100, 100), (1, 3))
+        sprite2 = MySprite((400, 300), (-2, -2))
+        sprite3 = MySprite((600, 300), (1, 2))
+        sprite4 = MySprite((700, 500), (-2, -3))
+        group = pg.sprite.Group()
+        group.add(sprite1, sprite2, sprite3, sprite4)
+
+        while True:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    return
+
+            self.screen.fill(pg.Color("green"))
+
+            # test logic here
+            for sprite in group:
+                if not self.screen_rect.contains(sprite.rect):
+                    if self.screen_rect.left > sprite.rect.left:
+                        sprite.speed.reflect_ip((1, 0))
+                    if self.screen_rect.right < sprite.rect.right:
+                        sprite.speed.reflect_ip((-1, 0))
+                    if self.screen_rect.top > sprite.rect.top:
+                        sprite.speed.reflect_ip((0, 1))
+                    if self.screen_rect.bottom < sprite.rect.bottom:
+                        sprite.speed.reflect_ip((0, -1))
+                subgroup = group.copy()
+                subgroup.remove(sprite)
+                for other in subgroup:
+                    if sprite.rect.colliderect(other.rect):
+                        sprite.speed.reflect_ip(other.speed)
+
+            group.update()
+            for sprite in group:
+                sprite.rect.center = sprite.pos
+            group.draw(self.screen)
+
+            pg.display.flip()
+            self.clock.tick(60)
+
 
     def tearDown(self) -> None:
         pg.quit()
