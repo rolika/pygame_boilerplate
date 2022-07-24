@@ -81,6 +81,11 @@ class TestMySprite(unittest.TestCase):
 
             # test logic here
             for sprite in group:
+                subgroup = group.copy()
+                subgroup.remove(sprite)
+                for other in subgroup:
+                    if sprite.rect.colliderect(other.rect):
+                        sprite.speed.reflect_ip(other.speed)
                 if not self.screen_rect.contains(sprite.rect):
                     if self.screen_rect.left > sprite.rect.left:
                         sprite.speed.reflect_ip((1, 0))
@@ -90,11 +95,6 @@ class TestMySprite(unittest.TestCase):
                         sprite.speed.reflect_ip((0, 1))
                     if self.screen_rect.bottom < sprite.rect.bottom:
                         sprite.speed.reflect_ip((0, -1))
-                subgroup = group.copy()
-                subgroup.remove(sprite)
-                for other in subgroup:
-                    if sprite.rect.colliderect(other.rect):
-                        sprite.speed.reflect_ip(other.speed)
 
             group.update()
             for sprite in group:
