@@ -13,6 +13,7 @@ class TestMySprite(unittest.TestCase):
         pg.display.set_caption("Sprite Test")
         self.clock = pg.time.Clock()
 
+
     def test_blank_sprite(self):
         mysprite = MySprite((400, 300), (0, 0))
         group = pg.sprite.Group()
@@ -154,6 +155,67 @@ class TestMySprite(unittest.TestCase):
                     sprite.rect.top = self.screen_rect.top
                 if self.screen_rect.bottom <= sprite.rect.bottom:
                     sprite.rect.bottom = self.screen_rect.bottom
+                # uődate position to the restricted position
+                sprite.pos = sprite.rect.center
+
+            # finally draw the sprite
+            group.draw(self.screen)
+
+            pg.display.flip()
+            self.clock.tick(60)
+
+    def test_accelerate_sprite(self):
+        sprite = MySprite((400, 300), (0, 0), size=(16, 32), color="black")
+        group = pg.sprite.GroupSingle()
+        group.add(sprite)
+
+        while True:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    return
+
+            self.screen.fill(pg.Color("green"))
+
+            # test logic here: Space Taxi :-D
+            # order of procedures is important
+
+            # handle key input
+            keys = pg.key.get_pressed()
+            if keys[pg.K_KP4]:
+                sprite.speed += (-.1, 0)
+            elif keys[pg.K_KP6]:
+                sprite.speed += (.1, 0)
+            elif keys[pg.K_KP8]:
+                sprite.speed += (0, -.1)
+            elif keys[pg.K_KP2]:
+                sprite.speed += (0, .1)
+            elif keys[pg.K_KP7]:
+                sprite.speed += (-.1, -.1)
+            elif keys[pg.K_KP9]:
+                sprite.speed += (.1, -.1)
+            elif keys[pg.K_KP1]:
+                sprite.speed += (-.1, .1)
+            elif keys[pg.K_KP3]:
+                sprite.speed += (.1, .1)
+
+            # update the sprite
+            group.update()
+            sprite.rect.center = sprite.pos
+
+            # keep sprite on screen
+            if not self.screen_rect.contains(sprite.rect):
+                if self.screen_rect.left >= sprite.rect.left:
+                    sprite.rect.left = self.screen_rect.left
+                    sprite.speed.x = 0
+                if self.screen_rect.right <= sprite.rect.right:
+                    sprite.rect.right = self.screen_rect.right
+                    sprite.speed.x = 0
+                if self.screen_rect.top >= sprite.rect.top:
+                    sprite.rect.top = self.screen_rect.top
+                    sprite.speed.y = 0
+                if self.screen_rect.bottom <= sprite.rect.bottom:
+                    sprite.rect.bottom = self.screen_rect.bottom
+                    sprite.speed.y = 0
                 # uődate position to the restricted position
                 sprite.pos = sprite.rect.center
 
