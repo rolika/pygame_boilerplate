@@ -11,19 +11,34 @@ class MySprite(pg.sprite.Sprite):
         self._image = self._load_image(image_file)
         self._image.convert_alpha()
         self._rect = self._image.get_rect()
-    
+
     @property
     def image(self) -> pg.Surface:
         return self._image
-    
+
     @property
     def rect(self) -> pg.Rect:
         return self._rect
-    
+
+    @property
+    def pos(self) -> pg.Vector2:
+        return self._pos
+
+    @pos.setter
+    def pos(self, pos: tuple[float]) -> None:
+        self._pos = pg.Vector2(pos)
+
+    @property
+    def speed(self) -> pg.Vector2:
+        return self._speed
+
+    @speed.setter
+    def speed(self, speed: tuple[float]) -> None:
+        self._speed = pg.Vector2(speed)
+
     def update(self, *args: Any, **kwargs: Any) -> None:
         self._pos += self._speed
-        self._rect.center = self._pos
-    
+
     def _load_image(self, image_file: str) -> pg.Surface:
         try:
             image = pg.image.load(image_file)
