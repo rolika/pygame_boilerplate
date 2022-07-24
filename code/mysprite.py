@@ -31,7 +31,7 @@ class MySprite(pg.sprite.Sprite):
 
     @pos.setter
     def pos(self, pos: tuple[float]) -> None:
-        self._pos = pg.Vector2(pos)
+        self._pos.update(pos)
 
     @property
     def speed(self) -> pg.Vector2:
@@ -39,7 +39,7 @@ class MySprite(pg.sprite.Sprite):
 
     @speed.setter
     def speed(self, speed: tuple[float]) -> None:
-        self._speed = pg.Vector2(speed)
+        self._speed.update(speed)
 
     def update(self, *args: Any, **kwargs: Any) -> None:
         self._pos += self._speed
