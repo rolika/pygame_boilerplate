@@ -1,10 +1,8 @@
-import sys
-
+from constants import SCREEN_SIZE, SCREEN_TITLE, FPS
 import pygame as pg
-
+import sys
 from state import State
 
-from constants import SCREEN_SIZE, SCREEN_TITLE, FPS
 
 
 def main(size: tuple[int],
@@ -12,9 +10,6 @@ def main(size: tuple[int],
          bgr: pg.Color,
          title: str,
          state: State) -> None:
-    """The main function of the game sets up the pygame window and runs
-    the game loop.
-    """
 
     pg.init()
     screen = pg.display.set_mode(size)

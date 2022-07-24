@@ -4,6 +4,7 @@ import unittest
 
 
 class TestMySprite(unittest.TestCase):
+    """Close the window to end the tests."""
 
     def setUp(self) -> None:
         pg.init()
@@ -13,7 +14,6 @@ class TestMySprite(unittest.TestCase):
         self.clock = pg.time.Clock()
 
     def test_blank_sprite(self):
-        """Close the window to end the test."""
         mysprite = MySprite((400, 300), (0, 0))
         group = pg.sprite.Group()
         group.add(mysprite)
@@ -35,7 +35,6 @@ class TestMySprite(unittest.TestCase):
             self.clock.tick(60)
 
     def test_bounce_sprite(self):
-        """Close the window to end the test."""
         mysprite = MySprite((400, 300), (1, 3))
         group = pg.sprite.Group()
         group.add(mysprite)
@@ -64,9 +63,8 @@ class TestMySprite(unittest.TestCase):
 
             pg.display.flip()
             self.clock.tick(60)
-    
+
     def test_multiple_bounce_sprite(self):
-        """Close the window to end the test."""
         sprite1 = MySprite((100, 100), (1, 3))
         sprite2 = MySprite((400, 300), (-2, -2))
         sprite3 = MySprite((600, 300), (1, 2))
