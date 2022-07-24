@@ -7,11 +7,14 @@ class MySprite(pg.sprite.Sprite):
     def __init__(self,
                  pos: tuple[float],
                  speed: tuple[float],
-                 image_file: str = None) -> None:
+                 image_file: str = None,
+                 **kwargs: Any) -> None:
         super().__init__()
+        size = kwargs.get("size", DEFAULT_SPRITE_SIZE)
+        color = kwargs.get("color", DEFAULT_SPRITE_COLOR)
         self._pos = pg.Vector2(pos)
         self._speed = pg.Vector2(speed)
-        self._image = self._load_image(image_file)
+        self._image = self._load_image(image_file, size, color)
         self._rect = self._image.get_rect()
 
     @property
@@ -41,11 +44,14 @@ class MySprite(pg.sprite.Sprite):
     def update(self, *args: Any, **kwargs: Any) -> None:
         self._pos += self._speed
 
-    def _load_image(self, image_file: str) -> pg.Surface:
+    def _load_image(self,
+                    image_file: str,
+                    size: tuple[int],
+                    color: Any) -> pg.Surface:
         try:
             image = pg.image.load(image_file)
         except (TypeError, pg.error):
             print(f"Error: Unable to load image file: {image_file}")
-            image = pg.Surface(DEFAULT_SPRITE_SIZE)
-            image.fill(DEFAULT_SPRITE_COLOR)
+            image = pg.Surface(size)
+            image.fill(color)
         return image.convert_alpha()

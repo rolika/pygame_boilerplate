@@ -66,9 +66,9 @@ class TestMySprite(unittest.TestCase):
 
     def test_multiple_bounce_sprite(self):
         sprite1 = MySprite((100, 100), (1, 3))
-        sprite2 = MySprite((400, 300), (-2, -2))
-        sprite3 = MySprite((600, 300), (1, 2))
-        sprite4 = MySprite((700, 500), (-2, -3))
+        sprite2 = MySprite((400, 300), (-2, -2), size=(10, 10), color="black")
+        sprite3 = MySprite((600, 300), (1, 2), size=(32, 32), color="red")
+        sprite4 = MySprite((700, 500), (-2, -3), size=(64, 64), color="blue")
         group = pg.sprite.Group()
         group.add(sprite1, sprite2, sprite3, sprite4)
 
