@@ -1,6 +1,8 @@
 import pygame as pg
 from typing import Any
-from code.constants import DEFAULT_SPRITE_COLOR, DEFAULT_SPRITE_SIZE
+from code.constants import DEFAULT_GRAVITY,\
+                           DEFAULT_SPRITE_COLOR,\
+                           DEFAULT_SPRITE_SIZE
 
 
 class MySprite(pg.sprite.Sprite):
@@ -10,8 +12,13 @@ class MySprite(pg.sprite.Sprite):
                  image_file: str = None,
                  **kwargs: Any) -> None:
         super().__init__()
+
+        # fetch user-defined arguments
         size = kwargs.get("size", DEFAULT_SPRITE_SIZE)
         color = kwargs.get("color", DEFAULT_SPRITE_COLOR)
+        self._gravity = pg.Vector2(kwargs.get("gravity", DEFAULT_GRAVITY))
+        self._gravity_acceleretion = self._gravity.copy()
+
         self._pos = pg.Vector2(pos)
         self._speed = pg.Vector2(speed)
         self._image = self._load_image(image_file, size, color)
@@ -41,8 +48,24 @@ class MySprite(pg.sprite.Sprite):
     def speed(self, speed: tuple[float]) -> None:
         self._speed.update(speed)
 
+    @property
+    def gravity(self) -> pg.Vector2:
+        return self._gravity
+
+    @gravity.setter
+    def gravity(self, gravity: tuple[float]) -> None:
+        self._gravity.update(gravity)
+
+    @property
+    def gravity_acceleretion(self) -> pg.Vector2:
+        return self._gravity_acceleretion
+
+    @gravity_acceleretion.setter
+    def gravity_acceleretion(self, gravity_acceleretion: tuple[float]) -> None:
+        self._gravity_acceleretion.update(gravity_acceleretion)
+
     def update(self, *args: Any, **kwargs: Any) -> None:
-        self._pos += self._speed
+        self._pos += self._speed + self._gravity_acceleretion
 
     def _load_image(self,
                     image_file: str,
