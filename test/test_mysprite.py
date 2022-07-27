@@ -3,6 +3,9 @@ import pygame as pg
 import unittest
 
 
+SPEED = 0.05
+
+
 class TestMySprite(unittest.TestCase):
     """Close the window to end the tests."""
 
@@ -182,21 +185,21 @@ class TestMySprite(unittest.TestCase):
             # handle key input
             keys = pg.key.get_pressed()
             if keys[pg.K_KP4]:
-                sprite.speed += (-.1, 0)
+                sprite.speed += (-SPEED, 0)
             elif keys[pg.K_KP6]:
-                sprite.speed += (.1, 0)
+                sprite.speed += (SPEED, 0)
             elif keys[pg.K_KP8]:
-                sprite.speed += (0, -.1)
+                sprite.speed += (0, -SPEED)
             elif keys[pg.K_KP2]:
-                sprite.speed += (0, .1)
+                sprite.speed += (0, SPEED)
             elif keys[pg.K_KP7]:
-                sprite.speed += (-.1, -.1)
+                sprite.speed += (-SPEED, -SPEED)
             elif keys[pg.K_KP9]:
-                sprite.speed += (.1, -.1)
+                sprite.speed += (SPEED, -SPEED)
             elif keys[pg.K_KP1]:
-                sprite.speed += (-.1, .1)
+                sprite.speed += (-SPEED, SPEED)
             elif keys[pg.K_KP3]:
-                sprite.speed += (.1, .1)
+                sprite.speed += (SPEED, SPEED)
 
             # update the sprite
             group.update()
@@ -243,28 +246,28 @@ class TestMySprite(unittest.TestCase):
             # handle key input
             keys = pg.key.get_pressed()
             if keys[pg.K_KP4]:
-                sprite.speed += (-.1, 0)
+                sprite.speed += (-SPEED, 0)
                 sprite.gravity_acceleretion = sprite.gravity
             elif keys[pg.K_KP6]:
-                sprite.speed += (.1, 0)
+                sprite.speed += (SPEED, 0)
                 sprite.gravity_acceleretion = sprite.gravity
             elif keys[pg.K_KP8]:
-                sprite.speed += (0, -.1)
+                sprite.speed += (0, -SPEED)
                 sprite.gravity_acceleretion = sprite.gravity
             elif keys[pg.K_KP2]:
-                sprite.speed += (0, .1)
+                sprite.speed += (0, SPEED)
                 sprite.gravity_acceleretion = sprite.gravity
             elif keys[pg.K_KP7]:
-                sprite.speed += (-.1, -.1)
+                sprite.speed += (-SPEED, -SPEED)
                 sprite.gravity_acceleretion = sprite.gravity
             elif keys[pg.K_KP9]:
-                sprite.speed += (.1, -.1)
+                sprite.speed += (SPEED, -SPEED)
                 sprite.gravity_acceleretion = sprite.gravity
             elif keys[pg.K_KP1]:
-                sprite.speed += (-.1, .1)
+                sprite.speed += (-SPEED, SPEED)
                 sprite.gravity_acceleretion = sprite.gravity
             elif keys[pg.K_KP3]:
-                sprite.speed += (.1, .1)
+                sprite.speed += (SPEED, SPEED)
                 sprite.gravity_acceleretion = sprite.gravity
             else:
                 sprite.gravity_acceleretion += sprite.gravity
