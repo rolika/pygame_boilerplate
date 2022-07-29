@@ -49,33 +49,11 @@ class MySprite(pg.sprite.Sprite):
 
     @speed.setter
     def speed(self, speed: tuple[float]) -> None:
+        self._gravity = self._gravity_acceleretion.copy()
         self._speed.update(speed)
 
-    @property
-    def friction(self) -> pg.Vector2:
-        return self._friction
-
-    @friction.setter
-    def friction(self, friction: tuple[float]) -> None:
-        self._friction.update(friction)
-
-    @property
-    def gravity(self) -> pg.Vector2:
-        return self._gravity
-
-    @gravity.setter
-    def gravity(self, gravity: tuple[float]) -> None:
-        self._gravity.update(gravity)
-
-    @property
-    def gravity_acceleretion(self) -> pg.Vector2:
-        return self._gravity_acceleretion
-
-    @gravity_acceleretion.setter
-    def gravity_acceleretion(self, gravity_acceleretion: tuple[float]) -> None:
-        self._gravity_acceleretion.update(gravity_acceleretion)
-
     def update(self, *args: Any, **kwargs: Any) -> None:
+        self._gravity += self._gravity_acceleretion
         self._speed = self._speed.elementwise() * self._friction
         self._speed += self._gravity
         self._pos += self._speed
