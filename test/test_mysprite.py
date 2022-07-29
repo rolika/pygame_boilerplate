@@ -331,8 +331,7 @@ class TestMySprite(unittest.TestCase):
             elif keys[pg.K_KP3]:
                 sprite.speed += (SPEED, SPEED)
                 sprite.gravity = sprite.gravity_acceleretion
-            else:                
-                sprite.gravity += sprite.gravity_acceleretion
+            sprite.gravity += sprite.gravity_acceleretion
 
             # update the sprite
             group.update()
