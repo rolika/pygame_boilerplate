@@ -17,7 +17,7 @@ class MySprite(pg.sprite.Sprite):
         # fetch user-defined arguments
         size = kwargs.get("size", DEFAULT_SPRITE_SIZE)
         color = kwargs.get("color", DEFAULT_SPRITE_COLOR)
-        self._friction = kwargs.get("friction", DEFAULT_FRICTION)
+        self._friction = pg.Vector2(kwargs.get("friction", DEFAULT_FRICTION))
         self._gravity = pg.Vector2(kwargs.get("gravity", DEFAULT_GRAVITY))
         self._gravity_acceleretion = self._gravity.copy()
 
@@ -75,7 +75,9 @@ class MySprite(pg.sprite.Sprite):
         self._gravity_acceleretion.update(gravity_acceleretion)
 
     def update(self, *args: Any, **kwargs: Any) -> None:
-        self._speed *= self._friction
+        print(f"speed: {type(self._speed)}, pos: {type(self._pos)}, friction: {type(self._friction)}, gravity: {type(self._gravity)}")
+        self._speed = self._speed.elementwise() * self._friction
+        self._speed += self._gravity_acceleretion
         self._pos += self._speed
 
     def _load_image(self,

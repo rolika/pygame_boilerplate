@@ -3,8 +3,8 @@ import pygame as pg
 import unittest
 
 
-SPEED = 0.2
-FRICTION = 0.95
+SPEED = 0.3
+FRICTION = (0.95, 0.95)
 
 
 class TestMySprite(unittest.TestCase):
@@ -291,7 +291,7 @@ class TestMySprite(unittest.TestCase):
             self.clock.tick(60)
 
     def test_gravity(self):
-        sprite = MySprite((400, 300), (0, 0), size=(16, 32), color="black", gravity=(0, .1))
+        sprite = MySprite((400, 300), (0, 0), size=(16, 32), color="black", gravity=(0.0, .005))
         group = pg.sprite.GroupSingle()
         group.add(sprite)
 
