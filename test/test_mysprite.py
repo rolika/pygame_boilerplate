@@ -309,30 +309,30 @@ class TestMySprite(unittest.TestCase):
             keys = pg.key.get_pressed()
             if keys[pg.K_KP4]:
                 sprite.speed += (-SPEED, 0)
-                sprite.gravity_acceleretion = sprite.gravity
+                sprite.gravity = sprite.gravity_acceleretion
             elif keys[pg.K_KP6]:
                 sprite.speed += (SPEED, 0)
-                sprite.gravity_acceleretion = sprite.gravity
+                sprite.gravity = sprite.gravity_acceleretion
             elif keys[pg.K_KP8]:
                 sprite.speed += (0, -SPEED)
-                sprite.gravity_acceleretion = sprite.gravity
+                sprite.gravity = sprite.gravity_acceleretion
             elif keys[pg.K_KP2]:
                 sprite.speed += (0, SPEED)
-                sprite.gravity_acceleretion = sprite.gravity
+                sprite.gravity = sprite.gravity_acceleretion
             elif keys[pg.K_KP7]:
                 sprite.speed += (-SPEED, -SPEED)
-                sprite.gravity_acceleretion = sprite.gravity
+                sprite.gravity = sprite.gravity_acceleretion
             elif keys[pg.K_KP9]:
                 sprite.speed += (SPEED, -SPEED)
-                sprite.gravity_acceleretion = sprite.gravity
+                sprite.gravity = sprite.gravity_acceleretion
             elif keys[pg.K_KP1]:
                 sprite.speed += (-SPEED, SPEED)
-                sprite.gravity_acceleretion = sprite.gravity
+                sprite.gravity = sprite.gravity_acceleretion
             elif keys[pg.K_KP3]:
                 sprite.speed += (SPEED, SPEED)
-                sprite.gravity_acceleretion = sprite.gravity
-            else:
-                sprite.gravity_acceleretion += sprite.gravity
+                sprite.gravity = sprite.gravity_acceleretion
+            else:                
+                sprite.gravity += sprite.gravity_acceleretion
 
             # update the sprite
             group.update()

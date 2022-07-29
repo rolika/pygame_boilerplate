@@ -1,7 +1,7 @@
 import pygame as pg
 from typing import Any
 from code.constants import DEFAULT_FRICTION,\
-                           DEFAULT_GRAVITY,\
+                           DEFAULT_GRAVITY_ACCELERATION,\
                            DEFAULT_SPRITE_COLOR,\
                            DEFAULT_SPRITE_SIZE
 
@@ -18,8 +18,9 @@ class MySprite(pg.sprite.Sprite):
         size = kwargs.get("size", DEFAULT_SPRITE_SIZE)
         color = kwargs.get("color", DEFAULT_SPRITE_COLOR)
         self._friction = pg.Vector2(kwargs.get("friction", DEFAULT_FRICTION))
-        self._gravity = pg.Vector2(kwargs.get("gravity", DEFAULT_GRAVITY))
-        self._gravity_acceleretion = self._gravity.copy()
+        self._gravity_acceleretion =\
+            pg.Vector2(kwargs.get("gravity", DEFAULT_GRAVITY_ACCELERATION))
+        self._gravity = self._gravity_acceleretion.copy()
 
         self._pos = pg.Vector2(pos)
         self._speed = pg.Vector2(speed)
@@ -75,9 +76,8 @@ class MySprite(pg.sprite.Sprite):
         self._gravity_acceleretion.update(gravity_acceleretion)
 
     def update(self, *args: Any, **kwargs: Any) -> None:
-        print(f"speed: {type(self._speed)}, pos: {type(self._pos)}, friction: {type(self._friction)}, gravity: {type(self._gravity)}")
         self._speed = self._speed.elementwise() * self._friction
-        self._speed += self._gravity_acceleretion
+        self._speed += self._gravity
         self._pos += self._speed
 
     def _load_image(self,
