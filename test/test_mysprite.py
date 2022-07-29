@@ -3,6 +3,10 @@ import pygame as pg
 import unittest
 
 
+SPEED = 0.3
+FRICTION = (0.95, 0.95)
+
+
 class TestMySprite(unittest.TestCase):
     """Close the window to end the tests."""
 
@@ -66,10 +70,10 @@ class TestMySprite(unittest.TestCase):
             self.clock.tick(60)
 
     def test_multiple_bounce_sprite(self):
-        sprite1 = MySprite((100, 100), (1, 3))
-        sprite2 = MySprite((400, 300), (-2, -2), size=(10, 10), color="black")
-        sprite3 = MySprite((600, 300), (1, 2), size=(32, 32), color="red")
-        sprite4 = MySprite((700, 500), (-2, -3), size=(64, 64), color="blue")
+        sprite1 = MySprite((100, 100), (2, 6))
+        sprite2 = MySprite((400, 300), (-4, -4), size=(10, 10), color="black")
+        sprite3 = MySprite((600, 300), (2, 4), size=(32, 32), color="red")
+        sprite4 = MySprite((700, 500), (-4, -6), size=(64, 64), color="blue")
         group = pg.sprite.Group()
         group.add(sprite1, sprite2, sprite3, sprite4)
 
@@ -182,21 +186,143 @@ class TestMySprite(unittest.TestCase):
             # handle key input
             keys = pg.key.get_pressed()
             if keys[pg.K_KP4]:
-                sprite.speed += (-.1, 0)
+                sprite.speed += (-SPEED, 0)
             elif keys[pg.K_KP6]:
-                sprite.speed += (.1, 0)
+                sprite.speed += (SPEED, 0)
             elif keys[pg.K_KP8]:
-                sprite.speed += (0, -.1)
+                sprite.speed += (0, -SPEED)
             elif keys[pg.K_KP2]:
-                sprite.speed += (0, .1)
+                sprite.speed += (0, SPEED)
             elif keys[pg.K_KP7]:
-                sprite.speed += (-.1, -.1)
+                sprite.speed += (-SPEED, -SPEED)
             elif keys[pg.K_KP9]:
-                sprite.speed += (.1, -.1)
+                sprite.speed += (SPEED, -SPEED)
             elif keys[pg.K_KP1]:
-                sprite.speed += (-.1, .1)
+                sprite.speed += (-SPEED, SPEED)
             elif keys[pg.K_KP3]:
-                sprite.speed += (.1, .1)
+                sprite.speed += (SPEED, SPEED)
+
+            # update the sprite
+            group.update()
+            sprite.rect.center = sprite.pos
+
+            # keep sprite on screen
+            if not self.screen_rect.contains(sprite.rect):
+                if self.screen_rect.left >= sprite.rect.left:
+                    sprite.rect.left = self.screen_rect.left
+                    sprite.speed.x = 0
+                if self.screen_rect.right <= sprite.rect.right:
+                    sprite.rect.right = self.screen_rect.right
+                    sprite.speed.x = 0
+                if self.screen_rect.top >= sprite.rect.top:
+                    sprite.rect.top = self.screen_rect.top
+                    sprite.speed.y = 0
+                if self.screen_rect.bottom <= sprite.rect.bottom:
+                    sprite.rect.bottom = self.screen_rect.bottom
+                    sprite.speed.y = 0
+                # uődate position to the restricted position
+                sprite.pos = sprite.rect.center
+
+            # finally draw the sprite
+            group.draw(self.screen)
+
+            pg.display.flip()
+            self.clock.tick(60)
+
+    def test_friction(self):
+        sprite = MySprite((400, 300), (0, 0), size=(16, 32), color="black", friction=FRICTION)
+        group = pg.sprite.GroupSingle()
+        group.add(sprite)
+
+        while True:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    return
+
+            self.screen.fill(pg.Color("green"))
+
+            # test logic here
+            # order of procedures is important
+
+            # handle key input
+            keys = pg.key.get_pressed()
+            if keys[pg.K_KP4]:
+                sprite.speed += (-SPEED, 0)
+            elif keys[pg.K_KP6]:
+                sprite.speed += (SPEED, 0)
+            elif keys[pg.K_KP8]:
+                sprite.speed += (0, -SPEED)
+            elif keys[pg.K_KP2]:
+                sprite.speed += (0, SPEED)
+            elif keys[pg.K_KP7]:
+                sprite.speed += (-SPEED, -SPEED)
+            elif keys[pg.K_KP9]:
+                sprite.speed += (SPEED, -SPEED)
+            elif keys[pg.K_KP1]:
+                sprite.speed += (-SPEED, SPEED)
+            elif keys[pg.K_KP3]:
+                sprite.speed += (SPEED, SPEED)
+
+            # update the sprite
+            group.update()
+            sprite.rect.center = sprite.pos
+
+            # keep sprite on screen
+            if not self.screen_rect.contains(sprite.rect):
+                if self.screen_rect.left >= sprite.rect.left:
+                    sprite.rect.left = self.screen_rect.left
+                    sprite.speed.x = 0
+                if self.screen_rect.right <= sprite.rect.right:
+                    sprite.rect.right = self.screen_rect.right
+                    sprite.speed.x = 0
+                if self.screen_rect.top >= sprite.rect.top:
+                    sprite.rect.top = self.screen_rect.top
+                    sprite.speed.y = 0
+                if self.screen_rect.bottom <= sprite.rect.bottom:
+                    sprite.rect.bottom = self.screen_rect.bottom
+                    sprite.speed.y = 0
+                # uődate position to the restricted position
+                sprite.pos = sprite.rect.center
+
+            # finally draw the sprite
+            group.draw(self.screen)
+
+            pg.display.flip()
+            self.clock.tick(60)
+
+    def test_gravity(self):
+        sprite = MySprite((400, 300), (0, 0), size=(16, 32), color="black", gravity=(0.0, .005))
+        group = pg.sprite.GroupSingle()
+        group.add(sprite)
+
+        while True:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    return
+
+            self.screen.fill(pg.Color("green"))
+
+            # test logic here
+            # order of procedures is important
+
+            # handle key input
+            keys = pg.key.get_pressed()
+            if keys[pg.K_KP4]:
+                sprite.speed += (-SPEED, 0)
+            elif keys[pg.K_KP6]:
+                sprite.speed += (SPEED, 0)
+            elif keys[pg.K_KP8]:
+                sprite.speed += (0, -SPEED)
+            elif keys[pg.K_KP2]:
+                sprite.speed += (0, SPEED)
+            elif keys[pg.K_KP7]:
+                sprite.speed += (-SPEED, -SPEED)
+            elif keys[pg.K_KP9]:
+                sprite.speed += (SPEED, -SPEED)
+            elif keys[pg.K_KP1]:
+                sprite.speed += (-SPEED, SPEED)
+            elif keys[pg.K_KP3]:
+                sprite.speed += (SPEED, SPEED)
 
             # update the sprite
             group.update()
