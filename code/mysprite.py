@@ -8,13 +8,27 @@ from code.constants import DEFAULT_FRICTION,\
 
 class MySprite(pg.sprite.Sprite):
     def __init__(self,
-                 pos: tuple[float],
-                 speed: tuple[float],
+                 pos: tuple[int, int],
+                 speed: tuple[float, float],
                  image_file: str = None,
                  **kwargs: Any) -> None:
+        """Custom sprite class that handles everything a sprite needs.
+        pos:    screen position of sprite
+        speed:  speed and direction of sprite
+        image:  image of sprite (replaced with a rectangle if an error occurs)
+        kwargs: additional arguments:
+            size:       tuple[int, int]
+                        size of sprite (if no image is provided)
+            color:      Any datatype pygame recognizes
+                        color of sprite (if no image is provided)
+            friction:   tuple[float, float]
+                        friction (slowdown) of sprite, 0 is no slowdown at all
+            gravity:    tuple[float, float]
+                        magnitude and direction of gravity, 0 is no gravity
+        """
         super().__init__()
 
-        # fetch user-defined arguments
+        # fetch useful keyword arguments
         size = kwargs.get("size", DEFAULT_SPRITE_SIZE)
         color = kwargs.get("color", DEFAULT_SPRITE_COLOR)
         self._friction = pg.Vector2(kwargs.get("friction", DEFAULT_FRICTION))
@@ -49,6 +63,7 @@ class MySprite(pg.sprite.Sprite):
 
     @speed.setter
     def speed(self, speed: tuple[float]) -> None:
+        # reset gravity if speed is set
         self._gravity = self._gravity_acceleretion.copy()
         self._speed.update(speed)
 
