@@ -40,6 +40,7 @@ class MySprite(pg.sprite.Sprite):
         self._speed = pg.Vector2(speed)
         self._image = self._load_image(image_file, size, color)
         self._rect = self._image.get_rect()
+        self._mask = pg.mask.from_surface(self.image)
 
     @property
     def image(self) -> pg.Surface:
@@ -48,6 +49,10 @@ class MySprite(pg.sprite.Sprite):
     @property
     def rect(self) -> pg.Rect:
         return self._rect
+    
+    @property
+    def mask(self) -> pg.mask.Mask:
+        return self._mask
 
     @property
     def pos(self) -> pg.Vector2:
