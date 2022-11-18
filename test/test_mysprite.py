@@ -90,7 +90,8 @@ class TestMySprite(unittest.TestCase):
                 subgroup.remove(sprite)
                 for other in subgroup:
                     if sprite.rect.colliderect(other.rect):
-                        sprite.speed.reflect_ip(other.speed)
+                        # substract vectors to get reflection plane
+                        sprite.speed.reflect_ip(sprite.speed - other.speed)
                 if not self.screen_rect.contains(sprite.rect):
                     if self.screen_rect.left > sprite.rect.left:
                         sprite.speed.reflect_ip((1, 0))
