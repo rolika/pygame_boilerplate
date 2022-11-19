@@ -18,7 +18,7 @@ class TestTaxi(unittest.TestCase):
         pg.init()
         self.screen = pg.display.set_mode((320, 240), flags=pg.SCALED)
         self.screen_rect = self.screen.get_rect()
-        pg.display.set_caption("Sprite Test")
+        pg.display.set_caption("Space Taxi")
         self.clock = pg.time.Clock()
 
     def test_taxi_game(self):
@@ -27,6 +27,10 @@ class TestTaxi(unittest.TestCase):
 
         taxi = MySprite((300, 200), (0, 0), size=(16, 8), color="orange", gravity=GRAVITY, friction=FRICTION)
         player = pg.sprite.GroupSingle(taxi)
+        hull = 4
+        # although the taxi has only 3 lives (hulls), an original hull damage
+        # seems to occur, so the if i want 3 hulls, i have to start with a 4
+        # perhaps it's because one sprite is inside another
 
         while True:
             for event in pg.event.get():
@@ -55,9 +59,13 @@ class TestTaxi(unittest.TestCase):
             elif keys[pg.K_KP3]:
                 taxi.speed += (SPEED, SPEED)
 
-            # keep taxi off the cave walls
+            # cave walls damages the taxi
             if pg.sprite.spritecollideany(taxi, scene, collided=pg.sprite.collide_mask):
                 taxi.speed.rotate_ip(180)
+                hull -= 1
+            
+            if hull < 1:
+                return
 
             player.update()
             taxi.rect.center = taxi.pos
