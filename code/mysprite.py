@@ -32,9 +32,8 @@ class MySprite(pg.sprite.Sprite):
         size = kwargs.get("size", DEFAULT_SPRITE_SIZE)
         color = kwargs.get("color", DEFAULT_SPRITE_COLOR)
         self._friction = pg.Vector2(kwargs.get("friction", DEFAULT_FRICTION))
-        self._gravity_acceleretion =\
+        self._gravity =\
             pg.Vector2(kwargs.get("gravity", DEFAULT_GRAVITY_ACCELERATION))
-        self._gravity = self._gravity_acceleretion.copy()
 
         self._pos = pg.Vector2(pos)
         self._speed = pg.Vector2(speed)
@@ -69,11 +68,9 @@ class MySprite(pg.sprite.Sprite):
     @speed.setter
     def speed(self, speed: tuple[float]) -> None:
         # reset gravity if speed is set
-        self._gravity = self._gravity_acceleretion.copy()
         self._speed.update(speed)
 
     def update(self, *args: Any, **kwargs: Any) -> None:
-        self._gravity += self._gravity_acceleretion
         self._speed = self._speed.elementwise() * self._friction
         self._speed += self._gravity
         self._pos += self._speed
