@@ -14,11 +14,11 @@ class TestMySprite(unittest.TestCase):
         pg.init()
         self.screen = pg.display.set_mode((800, 600))
         self.screen_rect = self.screen.get_rect()
-        pg.display.set_caption("Sprite Test")
         self.clock = pg.time.Clock()
 
 
     def test_blank_sprite(self):
+        pg.display.set_caption("Test Blank Sprite")
         mysprite = MySprite((400, 300), (0, 0))
         group = pg.sprite.Group()
         group.add(mysprite)
@@ -40,6 +40,7 @@ class TestMySprite(unittest.TestCase):
             self.clock.tick(60)
 
     def test_bounce_sprite(self):
+        pg.display.set_caption("Test Bounce Sprite")
         mysprite = MySprite((400, 300), (1, 3))
         group = pg.sprite.Group()
         group.add(mysprite)
@@ -70,6 +71,7 @@ class TestMySprite(unittest.TestCase):
             self.clock.tick(60)
 
     def test_multiple_bounce_sprite(self):
+        pg.display.set_caption("Test Multiple Bounce Sprite")
         sprite1 = MySprite((100, 100), (2, 6))
         sprite2 = MySprite((400, 300), (-4, -4), size=(10, 10), color="black")
         sprite3 = MySprite((600, 300), (2, 4), size=(32, 32), color="red")
@@ -111,6 +113,7 @@ class TestMySprite(unittest.TestCase):
             self.clock.tick(60)
 
     def test_stay_on_screen_keyboard(self):
+        pg.display.set_caption("Test Keep On Screen")
         sprite = MySprite((400, 300), (0, 0), size=(16, 32), color="black")
         group = pg.sprite.GroupSingle()
         group.add(sprite)
@@ -170,6 +173,7 @@ class TestMySprite(unittest.TestCase):
             self.clock.tick(60)
 
     def test_accelerate_sprite(self):
+        pg.display.set_caption("Test Accelerate Sprite")
         sprite = MySprite((400, 300), (0, 0), size=(16, 32), color="black")
         group = pg.sprite.GroupSingle()
         group.add(sprite)
@@ -231,6 +235,7 @@ class TestMySprite(unittest.TestCase):
             self.clock.tick(60)
 
     def test_friction(self):
+        pg.display.set_caption("Test Friction Sprite")
         sprite = MySprite((400, 300), (0, 0), size=(16, 32), color="black", friction=FRICTION)
         group = pg.sprite.GroupSingle()
         group.add(sprite)
@@ -292,6 +297,7 @@ class TestMySprite(unittest.TestCase):
             self.clock.tick(60)
 
     def test_gravity(self):
+        pg.display.set_caption("Test Gravity Sprite")
         sprite = MySprite((400, 300), (0, 0), size=(16, 32), color="black", gravity=(0.0, .005))
         group = pg.sprite.GroupSingle()
         group.add(sprite)
@@ -353,6 +359,7 @@ class TestMySprite(unittest.TestCase):
             self.clock.tick(60)
 
     def test_gravity_with_friction(self):
+        pg.display.set_caption("Test Gravity & Friction Sprite")
         sprite = MySprite((400, 300), (0, 0), size=(16, 32), color="black", gravity=(0.0, .005), friction=(0.9, 1.0))
         group = pg.sprite.GroupSingle()
         group.add(sprite)
