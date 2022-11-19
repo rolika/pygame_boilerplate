@@ -7,7 +7,7 @@ import unittest
 
 
 SPEED = 0.05
-FRICTION = (0.95, 0.95)
+FRICTION = (0.99, 0.99)
 GRAVITY = (0, 0.00005)
 
 
@@ -22,15 +22,24 @@ class TestTaxi(unittest.TestCase):
         self.clock = pg.time.Clock()
 
     def test_taxi_game(self):
+        # setup level
         level = MySprite((0, 0), (0, 0), "test/taxi_scene.png")
         scene = pg.sprite.GroupSingle(level)
 
+        # setup player
         taxi = MySprite((300, 200), (0, 0), size=(16, 8), color="orange", gravity=GRAVITY, friction=FRICTION)
         player = pg.sprite.GroupSingle(taxi)
         hull = 4
         # although the taxi has only 3 lives (hulls), an original hull damage
         # seems to occur, so the if i want 3 hulls, i have to start with a 4
         # perhaps it's because one sprite is inside another
+
+        # setup survivors
+        survivors = pg.sprite.Group()
+        survivor1 = MySprite((50, 214), (0, 0), size=(4, 8), color="blue")
+        survivor2 = MySprite((130, 84), (0, 0), size=(4, 8), color="red")
+        survivor3 = MySprite((280, 170), (0, 0), size=(4, 8), color="purple")
+        survivors.add(survivor1, survivor2, survivor3)
 
         while True:
             for event in pg.event.get():
@@ -66,10 +75,14 @@ class TestTaxi(unittest.TestCase):
             
             if hull < 1:
                 return
-
+            
             player.update()
             taxi.rect.center = taxi.pos
 
+            for survivor in survivors:
+                survivor.rect.topleft = survivor.pos
+
+            survivors.draw(self.screen)
             player.draw(self.screen)
 
             pg.display.flip()
