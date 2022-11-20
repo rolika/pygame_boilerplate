@@ -420,6 +420,49 @@ class TestMySprite(unittest.TestCase):
             pg.display.flip()
             self.clock.tick(60)
 
+    def test_cannonball(self):
+        pg.display.set_caption("Test Cannonball Sprite")
+        sprite = MySprite((16, 584), (5, -5), size=(32, 32), color="black", gravity=(0.0, 0.02), friction=(0.995, 0.995))
+        group = pg.sprite.GroupSingle()
+        group.add(sprite)
+
+        while True:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    return
+
+            self.screen.fill(pg.Color("green"))
+
+            # test logic here
+            # order of procedures is important
+
+            # update the sprite
+            group.update()
+            sprite.rect.center = sprite.pos
+
+            # keep sprite on screen
+            if not self.screen_rect.contains(sprite.rect):
+                if self.screen_rect.left >= sprite.rect.left:
+                    sprite.rect.left = self.screen_rect.left
+                    sprite.speed.x = 0
+                if self.screen_rect.right <= sprite.rect.right:
+                    sprite.rect.right = self.screen_rect.right
+                    sprite.speed.x = 0
+                if self.screen_rect.top >= sprite.rect.top:
+                    sprite.rect.top = self.screen_rect.top
+                    sprite.speed.y = 0
+                if self.screen_rect.bottom <= sprite.rect.bottom:
+                    sprite.rect.bottom = self.screen_rect.bottom
+                    sprite.speed.y = 0
+                # update position to the restricted position
+                sprite.pos = sprite.rect.center
+
+            # finally draw the sprite
+            group.draw(self.screen)
+
+            pg.display.flip()
+            self.clock.tick(60)
+
 
     def tearDown(self) -> None:
         pg.quit()
