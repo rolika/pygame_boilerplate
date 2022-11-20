@@ -18,7 +18,7 @@ class TestTaxi(unittest.TestCase):
         pg.init()
         self.screen = pg.display.set_mode((320, 240), flags=pg.SCALED)
         self.screen_rect = self.screen.get_rect()
-        pg.display.set_caption("Space Taxi")
+        pg.display.set_caption("Space Rescue")
         self.clock = pg.time.Clock()
 
     def test_taxi_game(self):
@@ -29,10 +29,11 @@ class TestTaxi(unittest.TestCase):
         # setup player
         taxi = MySprite((300, 200), (0, 0), size=(16, 8), color="orange", gravity=GRAVITY, friction=FRICTION)
         player = pg.sprite.GroupSingle(taxi)
-        hull = 4
         # although the taxi has only 3 lives (hulls), an original hull damage
-        # seems to occur, so the if i want 3 hulls, i have to start with a 4
+        # seems to occur, so if i want 3 hulls, i have to start with a 4
         # perhaps it's because one sprite is inside another
+        hull = 4
+        occupied = pg.sprite.GroupSingle()
 
         # setup survivors
         survivors = pg.sprite.Group()
@@ -40,6 +41,7 @@ class TestTaxi(unittest.TestCase):
         survivor2 = MySprite((130, 84), (0, 0), size=(4, 8), color="red")
         survivor3 = MySprite((280, 170), (0, 0), size=(4, 8), color="purple")
         survivors.add(survivor1, survivor2, survivor3)
+        rescued = pg.sprite.Group()
 
         while True:
             for event in pg.event.get():
@@ -81,6 +83,12 @@ class TestTaxi(unittest.TestCase):
 
             for survivor in survivors:
                 survivor.rect.topleft = survivor.pos
+            
+            # if the taxi meets a survivor and it's vacant, pick him up
+            survivor = pg.sprite.spritecollide(taxi, survivors, False)
+            if not occupied.sprite:
+                survivors.remove(survivor)
+                occupied.add(survivor)
 
             survivors.draw(self.screen)
             player.draw(self.screen)
