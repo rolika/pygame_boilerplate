@@ -25,6 +25,7 @@ class TestTaxi(unittest.TestCase):
         # setup level
         level = MySprite((0, 0), (0, 0), "test/taxi_scene.png")
         scene = pg.sprite.GroupSingle(level)
+        rescue_area = pg.Rect(288, 192, 32, 32)
 
         # setup player
         taxi = MySprite((300, 200), (0, 0), size=(16, 8), color="orange", gravity=GRAVITY, friction=FRICTION)
@@ -89,6 +90,14 @@ class TestTaxi(unittest.TestCase):
             if not occupied.sprite:
                 survivors.remove(survivor)
                 occupied.add(survivor)
+            
+            # check if the taxi is in the rescue area, and if it's occupied,
+            # unload the survivor
+            if rescue_area.contains(taxi.rect):
+                survivor = occupied.sprite
+                if survivor:
+                    occupied.remove(survivor)
+                    rescued.add(survivor)
 
             survivors.draw(self.screen)
             player.draw(self.screen)
