@@ -98,6 +98,9 @@ class TestTaxi(unittest.TestCase):
                 if survivor:
                     occupied.remove(survivor)
                     rescued.add(survivor)
+                # end game if all survivors rescued
+                if not survivors:
+                    return
 
             survivors.draw(self.screen)
             player.draw(self.screen)
