@@ -69,20 +69,16 @@ class Survivors(pg.sprite.Group):
         self._rescued = pg.sprite.Group()
 
     def rescue(self, survivor:MySprite) -> None:
-        self.remove(survivor)
         self._rescued.add(survivor)
 
-    def is_mission_complete(self) -> bool:
+    def all_safe(self) -> bool:
         return not bool(self)
 
     def update(self, *args, **kwargs):
         for survivor in self:
-            survivor.update()
             survivor.rect.topleft = survivor.pos
         for i, survivor in enumerate(self._rescued):
-            survivor.pos = (240 + i * 8, 8)
-            survivor.rect.topleft = survivor.pos
-            survivor.update()
+            survivor.rect.topleft = (240 + i * 8, 8)
 
 
 class TestTaxi(unittest.TestCase):
@@ -130,7 +126,6 @@ class TestTaxi(unittest.TestCase):
                     return
 
             player.update()
-            survivors.update()
 
             # if the taxi meets a survivor and it's vacant, pick him up
             survivor = pg.sprite.spritecollide(taxi, survivors, False)
@@ -145,8 +140,10 @@ class TestTaxi(unittest.TestCase):
                 if survivor:
                     survivors.rescue(survivor)
                     # end game if all survivors rescued
-                    if survivors.is_mission_complete():
+                    if survivors.all_safe():
                         return
+
+            survivors.update()
 
             survivors.draw(self.screen)
             player.draw(self.screen)
