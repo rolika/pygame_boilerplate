@@ -58,9 +58,31 @@ class Taxi(MySprite):
         self._passenger.add(survivor)
 
     def deliver(self) -> MySprite:
-        survivor = self._passenger33333333333333333.sprite
+        survivor = self._passenger.sprite
         self._passenger.empty()
         return survivor
+
+
+class Survivors(pg.sprite.Group):
+    def __init__(self, *sprites: typing.Union[pg.sprite.Sprite, typing.Sequence[pg.sprite.Sprite]]) -> None:
+        super().__init__(*sprites)
+        self._rescued = pg.sprite.Group()
+
+    def rescue(self, survivor:MySprite) -> None:
+        self.remove(survivor)
+        self._rescued.add(survivor)
+
+    def is_mission_complete(self) -> bool:
+        return not bool(self)
+
+    def update(self, *args, **kwargs):
+        for survivor in self:
+            survivor.update()
+            survivor.rect.topleft = survivor.pos
+        for i, survivor in enumerate(self._rescued):
+            survivor.pos = (240 + i * 8, 8)
+            survivor.rect.topleft = survivor.pos
+            survivor.update()
 
 
 class TestTaxi(unittest.TestCase):
@@ -88,8 +110,7 @@ class TestTaxi(unittest.TestCase):
         survivor1 = MySprite((50, 214), (0, 0), size=(4, 8), color="blue")
         survivor2 = MySprite((130, 84), (0, 0), size=(4, 8), color="red")
         survivor3 = MySprite((280, 170), (0, 0), size=(4, 8), color="purple")
-        survivors.add(survivor1, survivor2, survivor3)
-        rescued = pg.sprite.Group()
+        survivors = Survivors(survivor1, survivor2, survivor3)
 
         while True:
             for event in pg.event.get():
@@ -107,27 +128,25 @@ class TestTaxi(unittest.TestCase):
                 taxi.collide()
                 if taxi.is_wrecked():
                     return
-            
-            player.update()
 
-            for survivor in survivors:
-                survivor.rect.topleft = survivor.pos
-            
+            player.update()
+            survivors.update()
+
             # if the taxi meets a survivor and it's vacant, pick him up
             survivor = pg.sprite.spritecollide(taxi, survivors, False)
             if not taxi.passenger:
                 survivors.remove(survivor)
                 taxi.pickup(survivor)
-            
+
             # check if the taxi is in the rescue area, and if it's occupied,
             # deliver the survivor
             if rescue_area.contains(taxi.rect):
-                survivor = taxi.passenger
+                survivor = taxi.deliver()
                 if survivor:
-                    rescued.add(taxi.deliver())
-                # end game if all survivors rescued
-                if not survivors:
-                    return
+                    survivors.rescue(survivor)
+                    # end game if all survivors rescued
+                    if survivors.is_mission_complete():
+                        return
 
             survivors.draw(self.screen)
             player.draw(self.screen)
