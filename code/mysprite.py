@@ -27,6 +27,8 @@ class MySprite(pg.sprite.Sprite):
                         magnitude and direction of gravity, 0 is no gravity
             nomask:     bool
                         clear the mask to 0 bits
+            alpha:      int[0...255]
+                        set alpha value to image
         """
         super().__init__()
 
@@ -37,6 +39,7 @@ class MySprite(pg.sprite.Sprite):
         self._gravity =\
             pg.Vector2(kwargs.get("gravity", DEFAULT_GRAVITY_ACCELERATION))
         nomask = kwargs.get("nomask", False)
+        alpha = kwargs.get("alpha", 255)
 
         self._pos = pg.Vector2(pos)
         self._speed = pg.Vector2(speed)
@@ -45,6 +48,7 @@ class MySprite(pg.sprite.Sprite):
         self._mask = pg.mask.from_surface(self.image)
         if nomask:
             self._mask.clear()
+        self._image.set_alpha(alpha)
 
     @property
     def image(self) -> pg.Surface:

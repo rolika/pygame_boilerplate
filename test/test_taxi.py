@@ -86,8 +86,8 @@ class Rescued(pg.sprite.Group):
 
 
 class Level1(Level):
-    def __init__(self, level_image) -> None:
-        super().__init__(level_image)
+    def __init__(self, level_image, bgr_image) -> None:
+        super().__init__(level_image, background_image=bgr_image)
 
 
 class TestTaxi(unittest.TestCase):
@@ -102,7 +102,7 @@ class TestTaxi(unittest.TestCase):
 
     def test_taxi_game(self):
         # setup level
-        scene = Level1("test/taxi_scene.png")
+        scene = Level1("test/taxi_scene.png", "test/taxi_bgr_img.png")
         rescue_area = pg.Rect(288, 192, 32, 32)
 
         # setup player
