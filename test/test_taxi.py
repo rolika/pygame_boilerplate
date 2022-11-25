@@ -64,12 +64,8 @@ class Taxi(MySprite):
 
 
 class Survivors(pg.sprite.Group):
-    def __init__(self, *sprites: typing.Union[pg.sprite.Sprite, typing.Sequence[pg.sprite.Sprite]]) -> None:
+    def __init__(self, *sprites: typing.Union[MySprite, typing.Sequence[MySprite]]) -> None:
         super().__init__(*sprites)
-        self._rescued = pg.sprite.Group()
-
-    def rescue(self, survivor:MySprite) -> None:
-        self._rescued.add(survivor)
 
     def all_safe(self) -> bool:
         return not bool(self)
@@ -77,7 +73,14 @@ class Survivors(pg.sprite.Group):
     def update(self, *args, **kwargs):
         for survivor in self:
             survivor.rect.topleft = survivor.pos
-        for i, survivor in enumerate(self._rescued):
+
+
+class Rescued(pg.sprite.Group):
+    def __init__(self, *sprites: typing.Union[MySprite, typing.Sequence[MySprite]]) -> None:
+        super().__init__(*sprites)
+
+    def update(self, *args, **kwargs):
+        for i, survivor in enumerate(self):
             survivor.rect.topleft = (240 + i * 8, 8)
 
 
@@ -107,6 +110,7 @@ class TestTaxi(unittest.TestCase):
         survivor2 = MySprite((130, 84), (0, 0), size=(4, 8), color="red")
         survivor3 = MySprite((280, 170), (0, 0), size=(4, 8), color="purple")
         survivors = Survivors(survivor1, survivor2, survivor3)
+        rescued = Rescued()
 
         while True:
             for event in pg.event.get():
@@ -138,14 +142,18 @@ class TestTaxi(unittest.TestCase):
             if rescue_area.contains(taxi.rect):
                 survivor = taxi.deliver()
                 if survivor:
-                    survivors.rescue(survivor)
+                    rescued.add(survivor)
                     # end game if all survivors rescued
+                    # check here in the if statement!
                     if survivors.all_safe():
                         return
 
             survivors.update()
-
             survivors.draw(self.screen)
+
+            rescued.update()
+            rescued.draw(self.screen)
+
             player.draw(self.screen)
 
             pg.display.flip()
