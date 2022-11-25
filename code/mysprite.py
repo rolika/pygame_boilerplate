@@ -25,6 +25,8 @@ class MySprite(pg.sprite.Sprite):
                         friction (slowdown) of sprite, 0 is no slowdown at all
             gravity:    tuple[float, float]
                         magnitude and direction of gravity, 0 is no gravity
+            nomask:     bool
+                        clear the mask to 0 bits
         """
         super().__init__()
 
@@ -34,12 +36,15 @@ class MySprite(pg.sprite.Sprite):
         self._friction = pg.Vector2(kwargs.get("friction", DEFAULT_FRICTION))
         self._gravity =\
             pg.Vector2(kwargs.get("gravity", DEFAULT_GRAVITY_ACCELERATION))
+        nomask = kwargs.get("nomask", False)
 
         self._pos = pg.Vector2(pos)
         self._speed = pg.Vector2(speed)
         self._image = self._load_image(image_file, size, color)
         self._rect = self._image.get_rect()
         self._mask = pg.mask.from_surface(self.image)
+        if nomask:
+            self._mask.clear()
 
     @property
     def image(self) -> pg.Surface:
@@ -48,7 +53,7 @@ class MySprite(pg.sprite.Sprite):
     @property
     def rect(self) -> pg.Rect:
         return self._rect
-    
+
     @property
     def mask(self) -> pg.mask.Mask:
         return self._mask
