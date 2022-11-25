@@ -87,9 +87,10 @@ class Rescued(pg.sprite.Group):
 
 class Level1(Level):
     def __init__(self) -> None:
-        bgr_img = MySprite((0, 0), (0, 0), image_file="test/taxi_bgr.png", alpha=32, nomask=True)
+        bgr_color = MySprite((0, 0), (0, 0), size=(320, 240), color="black", nomask=True)
+        bgr_img = MySprite((0, 0), (0, 0), image_file="test/taxi_bgr.png", alpha=64, nomask=True)
         lvl_img = MySprite((0, 0), (0, 0), image_file="test/taxi_level.png")
-        super().__init__(bgr_img, lvl_img)  # order matters
+        super().__init__(bgr_color, bgr_img, lvl_img)  # order matters
 
 
 class TestTaxi(unittest.TestCase):
