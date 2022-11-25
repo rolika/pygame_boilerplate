@@ -86,12 +86,14 @@ class Rescued(pg.sprite.Group):
 
 
 class Level1(Level):
-    def __init__(self, level_image, bgr_image) -> None:
-        super().__init__(level_image, background_image=bgr_image)
+    def __init__(self) -> None:
+        bgr_img = MySprite((0, 0), (0, 0), image_file="test/taxi_bgr.png", alpha=32, nomask=True)
+        lvl_img = MySprite((0, 0), (0, 0), image_file="test/taxi_level.png")
+        super().__init__(bgr_img, lvl_img)  # order matters
 
 
 class TestTaxi(unittest.TestCase):
-    """Close the window to end the tests."""
+    """Close the window or finish the game to end the tests."""
 
     def setUp(self) -> None:
         pg.init()
@@ -102,7 +104,7 @@ class TestTaxi(unittest.TestCase):
 
     def test_taxi_game(self):
         # setup level
-        scene = Level1("test/taxi_scene.png", "test/taxi_bgr_img.png")
+        level = Level1()
         rescue_area = pg.Rect(288, 192, 32, 32)
 
         # setup player
@@ -122,14 +124,13 @@ class TestTaxi(unittest.TestCase):
                 if event.type == pg.QUIT:
                     return
 
-            self.screen.fill("black")
-            scene.draw(self.screen)
+            level.draw(self.screen)
 
             # handle key input
             taxi.get_input(pg.key.get_pressed())
 
             # cave walls damages the taxi
-            if pg.sprite.spritecollideany(taxi, scene, collided=pg.sprite.collide_mask):
+            if pg.sprite.spritecollideany(taxi, level, collided=pg.sprite.collide_mask):
                 taxi.collide()
                 if taxi.is_wrecked():
                     return

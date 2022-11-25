@@ -28,7 +28,7 @@ class MySprite(pg.sprite.Sprite):
             nomask:     bool
                         clear the mask to 0 bits
             alpha:      int[0...255]
-                        set alpha value to image
+                        set alpha value to image (255 is full opaque)
         """
         super().__init__()
 
