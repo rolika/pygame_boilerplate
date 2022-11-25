@@ -2,6 +2,7 @@
 
 
 from code.mysprite import MySprite
+from code.level import Level
 import pygame as pg
 import unittest
 import typing
@@ -84,6 +85,11 @@ class Rescued(pg.sprite.Group):
             survivor.rect.topleft = (240 + i * 8, 8)
 
 
+class Level1(Level):
+    def __init__(self, level_image) -> None:
+        super().__init__(level_image)
+
+
 class TestTaxi(unittest.TestCase):
     """Close the window to end the tests."""
 
@@ -96,8 +102,7 @@ class TestTaxi(unittest.TestCase):
 
     def test_taxi_game(self):
         # setup level
-        level = MySprite((0, 0), (0, 0), "test/taxi_scene.png")
-        scene = pg.sprite.GroupSingle(level)
+        scene = Level1("test/taxi_scene.png")
         rescue_area = pg.Rect(288, 192, 32, 32)
 
         # setup player
