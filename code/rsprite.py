@@ -2,21 +2,23 @@ import pygame as pg
 from typing import Any
 from code.constants import DEFAULT_FRICTION,\
                            DEFAULT_GRAVITY_ACCELERATION,\
-                           DEFAULT_SPRITE_COLOR,\
-                           DEFAULT_SPRITE_SIZE
+                           DEFAULT_COLOR,\
+                           DEFAULT_SIZE,\
+                           DEFAULT_POS,\
+                           DEFAULT_SPEED
 
 
-class MySprite(pg.sprite.Sprite):
-    def __init__(self,
-                 pos: tuple[int, int],
-                 speed: tuple[float, float],
-                 image_file: str = None,
-                 **kwargs: Any) -> None:
+class RSprite(pg.sprite.Sprite):
+    def __init__(self, **kwargs: Any) -> None:
         """Custom sprite class that handles everything a sprite needs.
-        pos:    screen position of sprite
-        speed:  speed and direction of sprite
-        image:  image of sprite (replaced with a rectangle if an error occurs)
-        kwargs: additional arguments:
+        known keyword arguments:
+            pos:        tuple[int, int]
+                        position of the sprite on the screen
+            speed:      tuple[float, float]
+                        speed and direction of sprite
+            img:        str
+                        image of sprite (replaced with the default rectangle if
+                        error occurs)
             size:       tuple[int, int]
                         size of sprite (if no image is provided)
             color:      Any datatype pygame recognizes
@@ -33,17 +35,18 @@ class MySprite(pg.sprite.Sprite):
         super().__init__()
 
         # fetch useful keyword arguments
-        size = kwargs.get("size", DEFAULT_SPRITE_SIZE)
-        color = kwargs.get("color", DEFAULT_SPRITE_COLOR)
+        size = kwargs.get("size", DEFAULT_SIZE)
+        color = kwargs.get("color", DEFAULT_COLOR)
         self._friction = pg.Vector2(kwargs.get("friction", DEFAULT_FRICTION))
         self._gravity =\
             pg.Vector2(kwargs.get("gravity", DEFAULT_GRAVITY_ACCELERATION))
         nomask = kwargs.get("nomask", False)
         alpha = kwargs.get("alpha", 255)
 
-        self._pos = pg.Vector2(pos)
-        self._speed = pg.Vector2(speed)
-        self._image = self._load_image(image_file, size, color)
+        self._pos = pg.Vector2(kwargs.get("pos", DEFAULT_POS))
+        self._speed = pg.Vector2(kwargs.get("speed", DEFAULT_SPEED))
+        img = kwargs.get("img", "")
+        self._image = self._load_image(img, size, color)
         self._rect = self._image.get_rect()
         self._mask = pg.mask.from_surface(self.image)
         if nomask:
@@ -90,7 +93,7 @@ class MySprite(pg.sprite.Sprite):
                     color: Any) -> pg.Surface:
         try:
             image = pg.image.load(image_file)
-        except (TypeError, pg.error):
+        except (FileNotFoundError, TypeError, pg.error):
             print(f"Error: Unable to load image file: {image_file}")
             image = pg.Surface(size)
             image.fill(color)
