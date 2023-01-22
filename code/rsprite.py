@@ -6,7 +6,7 @@ from code.constants import DEFAULT_FRICTION,\
                            DEFAULT_SPRITE_SIZE
 
 
-class MySprite(pg.sprite.Sprite):
+class RSprite(pg.sprite.Sprite):
     def __init__(self,
                  pos: tuple[int, int],
                  speed: tuple[float, float],
