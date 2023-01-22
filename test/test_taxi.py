@@ -14,8 +14,8 @@ GRAVITY = (0, 0.00005)
 
 
 class Taxi(RSprite):
-    def __init__(self, pos: tuple[int, int], speed: tuple[float, float], image_file: str = None, **kwargs: typing.Any) -> None:
-        super().__init__(pos, speed, image_file, **kwargs)
+    def __init__(self, **kwargs: typing.Any) -> None:
+        super().__init__(**kwargs)
         # although the taxi has only 3 lives (hulls), an original hull damage
         # seems to occur, so if i want 3 hulls, i have to start with a 4
         # perhaps it's because one sprite is inside another
@@ -87,9 +87,9 @@ class Rescued(pg.sprite.Group):
 
 class Level1(Level):
     def __init__(self) -> None:
-        bgr_color = RSprite((0, 0), (0, 0), size=(320, 240), color="black", nomask=True)
-        bgr_img = RSprite((0, 0), (0, 0), image_file="test/taxi_bgr.png", alpha=64, nomask=True)
-        lvl_img = RSprite((0, 0), (0, 0), image_file="test/taxi_level.png")
+        bgr_color = RSprite(pos=(0, 0), speed=(0, 0), size=(320, 240), color="black", nomask=True)
+        bgr_img = RSprite(pos=(0, 0), speed=(0, 0), img="test/taxi_bgr.png", alpha=64, nomask=True)
+        lvl_img = RSprite(pos=(0, 0), speed=(0, 0), img="test/taxi_level.png")
         super().__init__(bgr_color, bgr_img, lvl_img)  # order matters
 
 
@@ -109,14 +109,13 @@ class TestTaxi(unittest.TestCase):
         rescue_area = pg.Rect(288, 192, 32, 32)
 
         # setup player
-        taxi = Taxi((300, 200), (0, 0), size=(16, 8), color="orange", gravity=GRAVITY, friction=FRICTION)
+        taxi = Taxi(pos=(300, 200), speed=(0, 0), size=(16, 8), color="orange", gravity=GRAVITY, friction=FRICTION)
         player = pg.sprite.GroupSingle(taxi)
 
         # setup survivors
-        survivors = pg.sprite.Group()
-        survivor1 = RSprite((50, 214), (0, 0), size=(4, 8), color="blue")
-        survivor2 = RSprite((130, 84), (0, 0), size=(4, 8), color="red")
-        survivor3 = RSprite((280, 170), (0, 0), size=(4, 8), color="purple")
+        survivor1 = RSprite(pos=(50, 214), speed=(0, 0), size=(4, 8), color="blue")
+        survivor2 = RSprite(pos=(130, 84), speed=(0, 0), size=(4, 8), color="red")
+        survivor3 = RSprite(pos=(280, 170), speed=(0, 0), size=(4, 8), color="purple")
         survivors = Survivors(survivor1, survivor2, survivor3)
         rescued = Rescued()
 

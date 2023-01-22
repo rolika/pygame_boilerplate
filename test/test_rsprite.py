@@ -19,7 +19,7 @@ class TestRSprite(unittest.TestCase):
 
     def test_blank_sprite(self):
         pg.display.set_caption("Test Blank Sprite")
-        rsprite = RSprite((400, 300), (0, 0))
+        rsprite = RSprite(pos=(400, 300))
         group = pg.sprite.Group()
         group.add(rsprite)
 
@@ -41,7 +41,7 @@ class TestRSprite(unittest.TestCase):
 
     def test_bounce_sprite(self):
         pg.display.set_caption("Test Bounce Sprite")
-        rsprite = RSprite((400, 300), (1, 3))
+        rsprite = RSprite(pos=(400, 300), speed=(1, 3))
         group = pg.sprite.Group()
         group.add(rsprite)
 
@@ -72,10 +72,10 @@ class TestRSprite(unittest.TestCase):
 
     def test_multiple_bounce_sprite(self):
         pg.display.set_caption("Test Multiple Bounce Sprite")
-        sprite1 = RSprite((100, 100), (2, 6))
-        sprite2 = RSprite((400, 300), (-4, -4), size=(10, 10), color="black")
-        sprite3 = RSprite((600, 300), (2, 4), size=(32, 32), color="red")
-        sprite4 = RSprite((700, 500), (-4, -6), size=(64, 64), color="blue")
+        sprite1 = RSprite(pos=(100, 100), speed=(2, 6))
+        sprite2 = RSprite(pos=(400, 300), speed=(-4, -4), size=(10, 10), color="black")
+        sprite3 = RSprite(pos=(600, 300), speed=(2, 4), size=(32, 32), color="red")
+        sprite4 = RSprite(pos=(700, 500), speed=(-4, -6), size=(64, 64), color="blue")
         group = pg.sprite.Group()
         group.add(sprite1, sprite2, sprite3, sprite4)
 
@@ -114,7 +114,7 @@ class TestRSprite(unittest.TestCase):
 
     def test_stay_on_screen_keyboard(self):
         pg.display.set_caption("Test Keep On Screen")
-        sprite = RSprite((400, 300), (0, 0), size=(16, 32), color="black")
+        sprite = RSprite(pos=(400, 300), speed=(0, 0), size=(16, 32), color="black")
         group = pg.sprite.GroupSingle()
         group.add(sprite)
 
@@ -174,7 +174,7 @@ class TestRSprite(unittest.TestCase):
 
     def test_accelerate_sprite(self):
         pg.display.set_caption("Test Accelerate Sprite")
-        sprite = RSprite((400, 300), (0, 0), size=(16, 32), color="black")
+        sprite = RSprite(pos=(400, 300), speed=(0, 0), size=(16, 32), color="black")
         group = pg.sprite.GroupSingle()
         group.add(sprite)
 
@@ -236,7 +236,7 @@ class TestRSprite(unittest.TestCase):
 
     def test_friction(self):
         pg.display.set_caption("Test Friction Sprite")
-        sprite = RSprite((400, 300), (0, 0), size=(16, 32), color="black", friction=FRICTION)
+        sprite = RSprite(pos=(400, 300), speed=(0, 0), size=(16, 32), color="black", friction=FRICTION)
         group = pg.sprite.GroupSingle()
         group.add(sprite)
 
@@ -298,7 +298,7 @@ class TestRSprite(unittest.TestCase):
 
     def test_gravity(self):
         pg.display.set_caption("Test Gravity Sprite")
-        sprite = RSprite((400, 300), (0, 0), size=(16, 32), color="black", gravity=(0.0, .005))
+        sprite = RSprite(pos=(400, 300), speed=(0, 0), size=(16, 32), color="black", gravity=(0.0, .005))
         group = pg.sprite.GroupSingle()
         group.add(sprite)
 
@@ -360,7 +360,7 @@ class TestRSprite(unittest.TestCase):
 
     def test_gravity_with_friction(self):
         pg.display.set_caption("Test Gravity & Friction Sprite")
-        sprite = RSprite((400, 300), (0, 0), size=(16, 32), color="black", gravity=(0.0, .005), friction=(0.9, 1.0))
+        sprite = RSprite(pos=(400, 300), speed=(0, 0), size=(16, 32), color="black", gravity=(0.0, .005), friction=(0.9, 1.0))
         group = pg.sprite.GroupSingle()
         group.add(sprite)
 
@@ -422,7 +422,7 @@ class TestRSprite(unittest.TestCase):
 
     def test_cannonball(self):
         pg.display.set_caption("Test Cannonball Sprite")
-        sprite = RSprite((16, 584), (5, -5), size=(32, 32), color="black", gravity=(0.0, 0.02), friction=(0.995, 0.995))
+        sprite = RSprite(pos=(16, 584), speed=(5, -5), size=(32, 32), color="black", gravity=(0.0, 0.02), friction=(0.995, 0.995))
         group = pg.sprite.GroupSingle()
         group.add(sprite)
 
